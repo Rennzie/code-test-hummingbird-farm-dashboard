@@ -1,4 +1,6 @@
 import React, { createContext, useReducer, useContext } from 'react';
+import farm from '../data/farm.json';
+import { Field } from '../components/Field';
 
 type FarmProviderProps = {
   children: React.ReactNode;
@@ -10,16 +12,7 @@ type FarmState = {
   fields?: Field[];
 };
 
-type Field = {
-  name: string;
-  boundary: any;
-  hectares: number;
-  disease_susceptibility: number;
-  selectedCrop?: Crop;
-  yield?: number | null;
-};
-
-type Crop = {
+export type Crop = {
   name: string;
   expected_yield: number;
   disease_risk_factor: number;
@@ -42,7 +35,7 @@ type FarmAction =
 const initialFarmState: FarmState = {
   farmYield: null,
   selectedField: null,
-  fields: []
+  fields: [...farm.fields]
 };
 
 const initialMapContext: { farmState: FarmState; farmDispatch: React.Dispatch<FarmAction> } = {
@@ -56,7 +49,8 @@ const farmReducer = (state: FarmState, action: FarmAction) => {
   switch (action.type) {
     case 'setSelectedField':
       return {
-        ...state
+        ...state,
+        selectedField: action.payload
       };
     case 'setFieldCrop':
       return {
@@ -69,10 +63,11 @@ const farmReducer = (state: FarmState, action: FarmAction) => {
 };
 
 export function FarmProvider({ children }: FarmProviderProps) {
+  // @ts-ignore
   const [farmState, farmDispatch] = useReducer(farmReducer, initialFarmState);
 
   return (
-    <FarmContext.Provider value={{ farmState, farmDispatch }}> {children}</FarmContext.Provider>
+    <FarmContext.Provider value={{ farmState, farmDispatch }}>{children}</FarmContext.Provider>
   );
 }
 
