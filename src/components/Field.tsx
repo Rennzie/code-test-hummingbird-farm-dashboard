@@ -8,7 +8,7 @@ export type Field = {
   boundary: any;
   hectares: number;
   disease_susceptibility: number;
-  selectedCrop?: Crop;
+  selectedCrop?: Crop | null;
   yield?: number;
 };
 
@@ -31,7 +31,7 @@ const cropColors = new Map([
 
 function Field({ field }: Props) {
   const { farmDispatch } = useFarmState();
-  const [fillColor, setFillColor] = useState('blue');
+  const [fillColor, setFillColor] = useState('#BDBDBD');
 
   useEffect(() => {
     if (field.selectedCrop) {
@@ -43,7 +43,7 @@ function Field({ field }: Props) {
   }, [field]);
 
   const handleClick = () => {
-    farmDispatch({ type: 'setSelectedField', payload: field });
+    farmDispatch({ type: 'setSelectedField', payload: field.name });
   };
   return (
     <GeoJSON

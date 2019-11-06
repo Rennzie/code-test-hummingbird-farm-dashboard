@@ -1,6 +1,7 @@
 import React, { createContext, useReducer, useContext } from 'react';
 import farm from '../data/farm.json';
 import { Field } from '../components/Field';
+import { updateFieldCropAndYields } from './utils';
 
 type FarmProviderProps = {
   children: React.ReactNode;
@@ -8,7 +9,7 @@ type FarmProviderProps = {
 
 type FarmState = {
   farmYield: number | null;
-  selectedField: Field | null;
+  selectedField: string;
   fields: Field[];
 };
 
@@ -21,11 +22,8 @@ export type Crop = {
 
 type FarmAction =
   | {
-      type: 'updateFarmYield';
-    }
-  | {
       type: 'setSelectedField';
-      payload: Field;
+      payload: string;
     }
   | {
       type: 'setFieldCrop';
@@ -33,11 +31,12 @@ type FarmAction =
         fieldName: string;
         crop: Crop;
       };
-    };
+    }
+  | { type: 'resetFieldCrop'; payload: string };
 
 const initialFarmState: FarmState = {
   farmYield: null,
-  selectedField: null,
+  selectedField: '',
   fields: [...farm.fields]
 };
 
@@ -47,58 +46,6 @@ const initialMapContext: { farmState: FarmState; farmDispatch: React.Dispatch<Fa
 };
 
 const FarmContext = createContext(initialMapContext);
-
-const updateFarmYield = (fields: Field[]) => {
-  const newYield = fields.reduce((accumulator, { yield: fieldYield }) => {
-    if (fieldYield) {
-      return accumulator + fieldYield;
-    }
-    return accumulator;
-  }, 0);
-
-  return newYield;
-};
-
-const calcExpectedYield = (
-  yieldAverage: number,
-  fieldArea: number,
-  cropRiskFactor: number,
-  fieldDiseaseSusceptibility: number,
-  cropPricePerTonne: number
-) => {
-  const expectedYield =
-    ((yieldAverage * fieldArea) / (cropRiskFactor * fieldDiseaseSusceptibility)) *
-    cropPricePerTonne;
-
-  return Math.round(expectedYield);
-};
-
-const updateFieldsCrop = (crop: Crop, fields: Field[], fieldName: string) => {
-  const updatedFields = fields.map(field => {
-    if (field.name === fieldName) {
-      const newYield = calcExpectedYield(
-        crop.expected_yield,
-        field.hectares,
-        crop.disease_risk_factor,
-        field.disease_susceptibility,
-        crop.price_per_tonne
-      );
-
-      return { ...field, selectedCrop: crop, yield: newYield };
-    }
-
-    return field;
-  });
-
-  return updatedFields;
-};
-
-const updateFieldCropAndYields = (crop: Crop, fields: Field[], fieldName: string) => {
-  const updatedFields = updateFieldsCrop(crop, fields, fieldName);
-  const updatedFarmYield = updateFarmYield(updatedFields);
-
-  return { farmYield: updatedFarmYield, fields: updatedFields };
-};
 
 const farmReducer = (state: FarmState, action: FarmAction) => {
   switch (action.type) {
@@ -110,13 +57,14 @@ const farmReducer = (state: FarmState, action: FarmAction) => {
     case 'setFieldCrop':
       return {
         ...state,
-        ...updateFieldCropAndYields(action.payload.crop, state.fields, action.payload.fieldName)
+        ...updateFieldCropAndYields(state.fields, action.payload.fieldName, action.payload.crop)
       };
-    case 'updateFarmYield':
+    case 'resetFieldCrop':
       return {
         ...state,
-        farmYield: updateFarmYield(state.fields)
+        ...updateFieldCropAndYields(state.fields, action.payload)
       };
+
     default:
       // @ts-ignore
       throw new Error(`action type ${action.type} does not match any available action`);
