@@ -2,7 +2,7 @@ import React from 'react';
 import { Map as LeafletMap, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import farm from './data/farm.json';
+import farm from '../data/farm.json';
 // import crops from './data/crops.json';
 
 function App() {
