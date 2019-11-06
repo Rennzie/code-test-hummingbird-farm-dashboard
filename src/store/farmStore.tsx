@@ -8,8 +8,8 @@ type FarmProviderProps = {
 
 type FarmState = {
   farmYield: number | null;
-  selectedField: number | null;
-  fields?: Field[];
+  selectedField: Field | null;
+  fields: Field[];
 };
 
 export type Crop = {
@@ -22,7 +22,7 @@ export type Crop = {
 type FarmAction =
   | {
       type: 'setSelectedField';
-      payload: string;
+      payload: Field;
     }
   | {
       type: 'setFieldCrop';
@@ -45,6 +45,17 @@ const initialMapContext: { farmState: FarmState; farmDispatch: React.Dispatch<Fa
 
 const FarmContext = createContext(initialMapContext);
 
+const updateFieldsCrop = (crop: Crop, fields: Field[], fieldName: string) => {
+  const updatedFields = fields.map(field => {
+    if (field.name === fieldName) {
+      return { ...field, selectedCrop: crop };
+    }
+    return field;
+  });
+
+  return updatedFields;
+};
+
 const farmReducer = (state: FarmState, action: FarmAction) => {
   switch (action.type) {
     case 'setSelectedField':
@@ -54,7 +65,8 @@ const farmReducer = (state: FarmState, action: FarmAction) => {
       };
     case 'setFieldCrop':
       return {
-        ...state
+        ...state,
+        fields: updateFieldsCrop(action.payload.crop, state.fields, action.payload.fieldName)
       };
     default:
       // @ts-ignore

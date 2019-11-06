@@ -9,7 +9,7 @@ export type Field = {
   hectares: number;
   disease_susceptibility: number;
   selectedCrop?: Crop;
-  yield?: number | null;
+  yield?: number;
 };
 
 type Props = {
@@ -20,7 +20,7 @@ function Field({ field }: Props) {
   const { farmDispatch } = useFarmState();
 
   const handleClick = () => {
-    farmDispatch({ type: 'setSelectedField', payload: field.name });
+    farmDispatch({ type: 'setSelectedField', payload: field });
   };
   return <GeoJSON fillColor="red" data={field.boundary} onclick={handleClick} />;
 }
