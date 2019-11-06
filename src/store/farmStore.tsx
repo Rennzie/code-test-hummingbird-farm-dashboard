@@ -49,9 +49,8 @@ const initialMapContext: { farmState: FarmState; farmDispatch: React.Dispatch<Fa
 const FarmContext = createContext(initialMapContext);
 
 const updateFarmYield = (fields: Field[]) => {
-  const newYield = fields.reduce<any>((accumulator, { yield: fieldYield }) => {
+  const newYield = fields.reduce((accumulator, { yield: fieldYield }) => {
     if (fieldYield) {
-      console.log({ accumulator, fieldYield });
       return accumulator + fieldYield;
     }
     return accumulator;
