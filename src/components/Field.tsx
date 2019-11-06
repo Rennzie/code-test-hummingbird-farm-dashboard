@@ -32,6 +32,7 @@ const cropColors = new Map([
 function Field({ field }: Props) {
   const { farmDispatch } = useFarmState();
   const [fillColor, setFillColor] = useState('#BDBDBD');
+  // console.log(field);
 
   useEffect(() => {
     if (field.selectedCrop) {
@@ -39,6 +40,8 @@ function Field({ field }: Props) {
       if (color) {
         setFillColor(color);
       }
+    } else {
+      setFillColor('#BDBDBD');
     }
   }, [field]);
 
