@@ -21,6 +21,9 @@ export type Crop = {
 
 type FarmAction =
   | {
+      type: 'updateFarmYield';
+    }
+  | {
       type: 'setSelectedField';
       payload: Field;
     }
@@ -45,15 +48,57 @@ const initialMapContext: { farmState: FarmState; farmDispatch: React.Dispatch<Fa
 
 const FarmContext = createContext(initialMapContext);
 
+const updateFarmYield = (fields: Field[]) => {
+  const newYield = fields.reduce<any>((accumulator, { yield: fieldYield }) => {
+    if (fieldYield) {
+      console.log({ accumulator, fieldYield });
+      return accumulator + fieldYield;
+    }
+    return accumulator;
+  }, 0);
+
+  return newYield;
+};
+
+const calcExpectedYield = (
+  yieldAverage: number,
+  fieldArea: number,
+  cropRiskFactor: number,
+  fieldDiseaseSusceptibility: number,
+  cropPricePerTonne: number
+) => {
+  const expectedYield =
+    ((yieldAverage * fieldArea) / (cropRiskFactor * fieldDiseaseSusceptibility)) *
+    cropPricePerTonne;
+
+  return Math.round(expectedYield);
+};
+
 const updateFieldsCrop = (crop: Crop, fields: Field[], fieldName: string) => {
   const updatedFields = fields.map(field => {
     if (field.name === fieldName) {
-      return { ...field, selectedCrop: crop };
+      const newYield = calcExpectedYield(
+        crop.expected_yield,
+        field.hectares,
+        crop.disease_risk_factor,
+        field.disease_susceptibility,
+        crop.price_per_tonne
+      );
+
+      return { ...field, selectedCrop: crop, yield: newYield };
     }
+
     return field;
   });
 
   return updatedFields;
+};
+
+const updateFieldCropAndYields = (crop: Crop, fields: Field[], fieldName: string) => {
+  const updatedFields = updateFieldsCrop(crop, fields, fieldName);
+  const updatedFarmYield = updateFarmYield(updatedFields);
+
+  return { farmYield: updatedFarmYield, fields: updatedFields };
 };
 
 const farmReducer = (state: FarmState, action: FarmAction) => {
@@ -66,7 +111,12 @@ const farmReducer = (state: FarmState, action: FarmAction) => {
     case 'setFieldCrop':
       return {
         ...state,
-        fields: updateFieldsCrop(action.payload.crop, state.fields, action.payload.fieldName)
+        ...updateFieldCropAndYields(action.payload.crop, state.fields, action.payload.fieldName)
+      };
+    case 'updateFarmYield':
+      return {
+        ...state,
+        farmYield: updateFarmYield(state.fields)
       };
     default:
       // @ts-ignore

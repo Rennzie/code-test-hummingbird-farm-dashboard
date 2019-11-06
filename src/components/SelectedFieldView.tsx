@@ -24,6 +24,7 @@ function SelectedFieldView() {
   const [values, setValues] = useState({
     area: 0,
     name: '',
+    yield: 0,
     selectedCrop: ''
   });
 
@@ -33,6 +34,7 @@ function SelectedFieldView() {
       const newValues = {
         area: selectedField.hectares,
         name: selectedField.name,
+        yield: selectedField.yield ? selectedField.yield : 0,
         selectedCrop: selectedField.selectedCrop ? selectedField.selectedCrop.name : ''
       };
 
@@ -47,6 +49,7 @@ function SelectedFieldView() {
       type: 'setFieldCrop',
       payload: { fieldName: values.name, crop: nextCrop as Crop }
     });
+    farmDispatch({ type: 'updateFarmYield' });
   };
 
   return (
@@ -55,6 +58,7 @@ function SelectedFieldView() {
         <>
           <Typography variant="h6">Selected Field: {values.name}</Typography>
           <Typography variant="body1">Area: {values.area}</Typography>
+          <Typography variant="body1">Estimated yield: {values.yield}</Typography>
           <TextField
             fullWidth
             id="standard-select-currency"
