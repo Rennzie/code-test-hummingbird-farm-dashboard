@@ -1,24 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Map, TileLayer, GeoJSON } from 'react-leaflet';
 
-const App: React.FC = () => {
+import farm from './data/farm.json';
+// import crops from './data/crops.json';
+
+function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div>
+      {/* <header>
+        <h1>Welcome to th Hummingbird starter app</h1>
       </header>
+      <p>
+        To get started, edit <code>src/App.js</code> and save to reload. This is just a starter App,
+        change it, remove things and add things however you want.
+      </p> */}
+      <Map
+        style={{ width: '500px', height: '500px' }}
+        // @ts-ignore
+        center={farm.centre.coordinates}
+        zoom={13}
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        {farm.fields.map(field => (
+          // @ts-ignore
+          <GeoJSON key={field.name} data={field.boundary} />
+        ))}
+      </Map>
+      {/* <ul>
+        {crops.map(crop => (
+          <li key={crop.name}>{crop.name}</li>
+        ))}
+      </ul> */}
     </div>
   );
 }
