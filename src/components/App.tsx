@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { CircularProgress } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import { Map as LeafletMap, TileLayer } from 'react-leaflet';
 
@@ -35,25 +36,28 @@ function App() {
   if (loadingFarm) return <CircularProgress style={{ margin: '0 auto' }} size={100} />;
 
   return (
-    <main className={classes.appWrapper}>
-      {farmData && (
-        <>
-          <DashPanel farmName={farmData.farm.name} />
-          <LeafletMap
-            style={{ width: '70vw', height: '100vh' }}
-            // @ts-ignore
-            center={farmData.farm.centre.coordinates}
-            zoom={14}
-          >
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            {fields.map(field => (
-              <Field key={field.name} field={field} />
-            ))}
-          </LeafletMap>
-          <CropLegend />
-        </>
-      )}
-    </main>
+    <>
+      <CssBaseline />
+      <main className={classes.appWrapper}>
+        {farmData && (
+          <>
+            <DashPanel farmName={farmData.farm.name} />
+            <LeafletMap
+              style={{ width: '70vw', height: '100vh' }}
+              // @ts-ignore
+              center={farmData.farm.centre.coordinates}
+              zoom={14}
+            >
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              {fields.map(field => (
+                <Field key={field.name} field={field} />
+              ))}
+            </LeafletMap>
+            <CropLegend />
+          </>
+        )}
+      </main>
+    </>
   );
 }
 
