@@ -20,7 +20,7 @@ To run the application locally do the following from your terminal.
 
    > `yarn start`
 
-> **Note: You need Node.js install on you machine to run the environments**
+> **Note: You need Node.js installed on your machine to run the environments**
 
 ---
 
