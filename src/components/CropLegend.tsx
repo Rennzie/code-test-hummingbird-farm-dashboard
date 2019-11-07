@@ -45,7 +45,7 @@ function CropLegend() {
         variant="menu"
       >
         {iterableColors.map(set => (
-          <MenuItem style={{ display: 'flex', justifyContent: 'center' }}>
+          <MenuItem key={set.name} style={{ display: 'flex', justifyContent: 'center' }}>
             <ListItemIcon>
               <div style={{ width: 20, height: 20, backgroundColor: set.color }} />
             </ListItemIcon>
