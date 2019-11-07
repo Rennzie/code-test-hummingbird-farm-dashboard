@@ -16,7 +16,7 @@ type Props = {
   field: Field;
 };
 
-const cropColors = new Map([
+export const cropColors = new Map([
   ['Winter Wheat - Reflectance', '#FFCDD2'],
   ['Winter Wheat - Sundance', '#F44336'],
   ['Winter Wheat - Skyfall', '#C62828'],
