@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, MenuItem, Button, ListItemIcon, ListItemText } from '@material-ui/core';
+import {
+  Menu,
+  MenuItem,
+  Button,
+  ListItemIcon,
+  ListItemText,
+  // List,
+  ListItem
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 export const cropColors = new Map([
   ['Winter Wheat - Reflectance', '#FFCDD2'],
@@ -16,7 +25,17 @@ export const cropColors = new Map([
 
 type ColorSet = { color: string; name: string };
 
+const useStyles = makeStyles(() => ({
+  legendWrapper: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    zIndex: 1000
+  }
+}));
+
 function CropLegend() {
+  const classes = useStyles({});
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [iterableColors, setIterableColors] = useState([{ name: '', color: '' }]);
 
@@ -34,8 +53,10 @@ function CropLegend() {
     setAnchorEl(null);
   };
   return (
-    <>
-      <Button onClick={handleOpen}>Open Crop Legend</Button>
+    <div className={classes.legendWrapper}>
+      <Button variant="contained" color="primary" onClick={handleOpen}>
+        Crop Legend
+      </Button>
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -45,16 +66,16 @@ function CropLegend() {
         variant="menu"
       >
         {iterableColors.map(set => (
-          <MenuItem key={set.name} style={{ display: 'flex', justifyContent: 'center' }}>
+          <ListItem key={set.name} style={{ display: 'flex', justifyContent: 'center' }}>
             <ListItemIcon>
-              <div style={{ width: 20, height: 20, backgroundColor: set.color }} />
+              <div style={{ width: 40, height: 20, backgroundColor: set.color }} />
             </ListItemIcon>
             <ListItemText primary={set.name} />
-          </MenuItem>
+          </ListItem>
         ))}
         <MenuItem onClick={handleClose}>Close Menu</MenuItem>
       </Menu>
-    </>
+    </div>
   );
 }
 

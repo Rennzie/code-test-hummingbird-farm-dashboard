@@ -5,7 +5,7 @@ import { Map as LeafletMap, TileLayer } from 'react-leaflet';
 
 import 'leaflet/dist/leaflet.css';
 
-import { Field, DashPanel } from '.';
+import { Field, DashPanel, CropLegend } from '.';
 import { useGetFarm } from '../api';
 import { useFarmState } from '../store';
 
@@ -52,6 +52,7 @@ function App() {
                   <Field key={field.name} field={field} />
                 ))}
               </LeafletMap>
+              <CropLegend />
             </>
           )}
         </>
