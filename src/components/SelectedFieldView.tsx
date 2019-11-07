@@ -25,6 +25,10 @@ const useStyles = makeStyles(({ spacing }: Theme) => ({
   }
 }));
 
+/**
+ * Renders details of a selected field
+ * - Handles selecting a crop for the field
+ */
 function SelectedFieldView() {
   const classes = useStyles({});
   const {
@@ -73,7 +77,6 @@ function SelectedFieldView() {
           {/* ---------------------
               CROP HANDLER
           ----------------------- */}
-
           <TextField
             id="standard-select-currency"
             select

@@ -23,6 +23,10 @@ type Props = {
   field: Field;
 };
 
+/**
+ * Renders a field polygon to the map
+ * - handles state of polygon when selected
+ */
 function Field({ field }: Props) {
   const {
     farmState: { selectedField },

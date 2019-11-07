@@ -32,29 +32,25 @@ function App() {
     }
   }, [farmData, farmDispatch]);
 
+  if (loadingFarm) return <CircularProgress style={{ margin: '0 auto' }} size={100} />;
+
   return (
     <main className={classes.appWrapper}>
-      {loadingFarm ? (
-        <CircularProgress style={{ margin: '0 auto' }} size={100} />
-      ) : (
+      {farmData && (
         <>
-          {farmData && (
-            <>
-              <DashPanel farmName={farmData.farm.name} />
-              <LeafletMap
-                style={{ width: '70vw', height: '100vh' }}
-                // @ts-ignore
-                center={farmData.farm.centre.coordinates}
-                zoom={14}
-              >
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                {fields.map(field => (
-                  <Field key={field.name} field={field} />
-                ))}
-              </LeafletMap>
-              <CropLegend />
-            </>
-          )}
+          <DashPanel farmName={farmData.farm.name} />
+          <LeafletMap
+            style={{ width: '70vw', height: '100vh' }}
+            // @ts-ignore
+            center={farmData.farm.centre.coordinates}
+            zoom={14}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {fields.map(field => (
+              <Field key={field.name} field={field} />
+            ))}
+          </LeafletMap>
+          <CropLegend />
         </>
       )}
     </main>

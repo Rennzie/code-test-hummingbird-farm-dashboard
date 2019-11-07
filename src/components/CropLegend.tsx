@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Menu,
-  MenuItem,
-  Button,
-  ListItemIcon,
-  ListItemText,
-  // List,
-  ListItem
-} from '@material-ui/core';
+import { Menu, MenuItem, Button, ListItemIcon, ListItemText, ListItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 export const cropColors = new Map([
@@ -34,6 +26,10 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+/**
+ * Displays a list of the crops and their designated colors
+ * - Button renders top right of the screen
+ */
 function CropLegend() {
   const classes = useStyles({});
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -52,6 +48,7 @@ function CropLegend() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <div className={classes.legendWrapper}>
       <Button variant="contained" color="primary" onClick={handleOpen}>
@@ -65,12 +62,12 @@ function CropLegend() {
         onClose={handleClose}
         variant="menu"
       >
-        {iterableColors.map(set => (
-          <ListItem key={set.name} style={{ display: 'flex', justifyContent: 'center' }}>
+        {iterableColors.map(color => (
+          <ListItem key={color.name} style={{ display: 'flex', justifyContent: 'center' }}>
             <ListItemIcon>
-              <div style={{ width: 40, height: 20, backgroundColor: set.color }} />
+              <div style={{ width: 40, height: 20, backgroundColor: color.color }} />
             </ListItemIcon>
-            <ListItemText primary={set.name} />
+            <ListItemText primary={color.name} />
           </ListItem>
         ))}
         <MenuItem onClick={handleClose}>Close Menu</MenuItem>

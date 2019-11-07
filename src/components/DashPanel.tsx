@@ -23,6 +23,14 @@ type Props = {
   farmName: string;
 };
 
+/**
+ * Renders the dashboard for the farm in a narrow vertical panel
+ * Displays:
+ *  - Farm name
+ *  - Estimated farm yield
+ *  - Details of the selected farm
+ *  - bar chart with estimated yield values per field
+ */
 function DashPanel({ farmName }: Props) {
   const classes = useStyles({});
   const {
@@ -43,15 +51,18 @@ function DashPanel({ farmName }: Props) {
   return (
     <section className={classes.dashPanel}>
       <Typography variant="h4">{farmName}</Typography>
-      <Typography variant="h6">Estimated yield value: £{farmYield}</Typography>
+      <Typography variant="h6">Estimated farm yield value: £{farmYield}</Typography>
       <SelectedFieldView />
       <CropLegend />
-      <BarChart
-        series={<BarSeries colorScheme="pastel1" />}
-        height={300}
-        width={400}
-        data={chartData}
-      />
+      <div>
+        <Typography align="center">Estimated yield value per field</Typography>
+        <BarChart
+          series={<BarSeries colorScheme="pastel1" />}
+          height={300}
+          width={400}
+          data={chartData}
+        />
+      </div>
     </section>
   );
 }

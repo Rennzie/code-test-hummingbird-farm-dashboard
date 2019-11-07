@@ -2,10 +2,6 @@ import React, { createContext, useReducer, useContext } from 'react';
 import { Field, Crop } from '../components/Field';
 import { updateFieldCropAndYields } from './utils';
 
-type FarmProviderProps = {
-  children: React.ReactNode;
-};
-
 type FarmState = {
   farmYield: number | null;
   selectedField: string;
@@ -76,6 +72,14 @@ const farmReducer = (state: FarmState, action: FarmAction) => {
   }
 };
 
+type FarmProviderProps = {
+  children: React.ReactNode;
+};
+
+/**
+ * Provides the default state and dispatch for the farm
+ * Allows children to access the state via the `useFarmState` hook
+ */
 export function FarmProvider({ children }: FarmProviderProps) {
   // @ts-ignore
   const [farmState, farmDispatch] = useReducer(farmReducer, initialFarmState);
@@ -85,4 +89,8 @@ export function FarmProvider({ children }: FarmProviderProps) {
   );
 }
 
+/**
+ * For access the farm state and dispatch
+ * - returns and object with `farmState` and `farmDispatch`
+ */
 export const useFarmState = () => useContext(FarmContext);
