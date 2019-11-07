@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { GeoJSON } from 'react-leaflet';
-import { Crop } from '../store/farmStore';
 import { cropColors } from './CropLegend';
 import { useFarmState } from '../store';
 
@@ -13,13 +12,31 @@ export type Field = {
   yield?: number;
 };
 
+export type Crop = {
+  name: string;
+  expected_yield: number;
+  disease_risk_factor: number;
+  price_per_tonne: number;
+};
+
 type Props = {
   field: Field;
 };
 
 function Field({ field }: Props) {
-  const { farmDispatch } = useFarmState();
+  const {
+    farmState: { selectedField },
+    farmDispatch
+  } = useFarmState();
   const [fillColor, setFillColor] = useState('#BDBDBD');
+  const [selectedStyle, setSelectedStyle] = useState();
+
+  useEffect(() => {
+    if (selectedField === field.name) {
+      return setSelectedStyle({ color: '#32cd32', opacity: 1 });
+    }
+    return setSelectedStyle({ color: fillColor, opacity: 1 });
+  }, [selectedField, field, setSelectedStyle, fillColor]);
 
   useEffect(() => {
     if (field.selectedCrop) {
@@ -35,12 +52,12 @@ function Field({ field }: Props) {
   const handleClick = () => {
     farmDispatch({ type: 'setSelectedField', payload: field.name });
   };
+
   return (
     <GeoJSON
+      style={() => selectedStyle}
       fillColor={fillColor}
-      strokeColor={fillColor}
-      fillOpacity={1}
-      strokeOpacity={1}
+      fillOpacity={0.7}
       data={field.boundary}
       onclick={handleClick}
     />

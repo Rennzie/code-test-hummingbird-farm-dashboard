@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useContext } from 'react';
-import { Field } from '../components/Field';
+import { Field, Crop } from '../components/Field';
 import { updateFieldCropAndYields } from './utils';
 
 type FarmProviderProps = {
@@ -12,13 +12,6 @@ type FarmState = {
   farmName: string;
   farmCenter: any;
   fields: Field[];
-};
-
-export type Crop = {
-  name: string;
-  expected_yield: number;
-  disease_risk_factor: number;
-  price_per_tonne: number;
 };
 
 type FarmAction =
@@ -47,12 +40,12 @@ const initialFarmState: FarmState = {
   fields: []
 };
 
-const initialMapContext: { farmState: FarmState; farmDispatch: React.Dispatch<FarmAction> } = {
+const initialFarmContext: { farmState: FarmState; farmDispatch: React.Dispatch<FarmAction> } = {
   farmState: initialFarmState,
   farmDispatch: () => {}
 };
 
-const FarmContext = createContext(initialMapContext);
+const FarmContext = createContext(initialFarmContext);
 
 const farmReducer = (state: FarmState, action: FarmAction) => {
   switch (action.type) {

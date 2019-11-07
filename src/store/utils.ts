@@ -1,5 +1,4 @@
-import { Field } from '../components/Field';
-import { Crop } from './farmStore';
+import { Crop, Field } from '../components/Field';
 
 const updateFarmYield = (fields: Field[]) => {
   const newYield = fields.reduce((accumulator, { yield: fieldYield }) => {

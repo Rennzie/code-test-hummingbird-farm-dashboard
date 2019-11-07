@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Paper, TextField, MenuItem } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
-import { Crop } from '../store/farmStore';
+import { Crop } from './Field';
 import { useGetCrops } from '../api';
 import { useFarmState } from '../store';
 
