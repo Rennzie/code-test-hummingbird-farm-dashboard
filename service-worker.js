@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/code-test-hummingbird-farm-dashboard/./precache-manifest.e752b286ee299d3f1b0088dc23b819d8.js"
+  "/code-test-hummingbird-farm-dashboard/./precache-manifest.5b8717a03b20aa3e9d6e5e189cc7ba59.js"
 );
 
 self.addEventListener('message', (event) => {
