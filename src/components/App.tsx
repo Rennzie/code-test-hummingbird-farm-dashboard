@@ -18,8 +18,11 @@ const useStyles = makeStyles(() => ({
     height: '100vh'
   },
   dashPanel: {
+    padding: 26,
+    boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'space-between',
     alignItems: 'center',
     width: '30vw',
     height: '100vh'

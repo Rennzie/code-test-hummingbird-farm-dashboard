@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Paper, TextField, MenuItem, Button } from '@material-ui/core';
+import { Typography, Paper, TextField, MenuItem } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 // import { Field } from './Field';
@@ -9,9 +9,20 @@ import crops from '../data/crops.json';
 
 const useStyles = makeStyles(({ spacing }: Theme) => ({
   selectedFieldWrapper: {
-    margin: spacing(2),
+    padding: spacing(2),
+    boxSizing: 'border-box',
     width: '100%',
-    height: '200px'
+    height: '200px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  detailsWrapper: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%'
   }
 }));
 
@@ -32,32 +43,35 @@ function SelectedFieldView() {
   }, [setActiveField, fields, selectedField]);
 
   const handleSelectedCrop = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const nextCrop = crops.find(crop => crop.name === event.target.value);
-    farmDispatch({
-      type: 'setFieldCrop',
-      payload: { fieldName: selectedField, crop: nextCrop as Crop }
-    });
-  };
+    if (event.target.value === 'remove-crop') {
+      farmDispatch({ type: 'resetFieldCrop', payload: selectedField });
+    } else {
+      const nextCrop = crops.find(crop => crop.name === event.target.value);
 
-  const handleRemoveCrop = () => {
-    farmDispatch({ type: 'resetFieldCrop', payload: selectedField });
+      farmDispatch({
+        type: 'setFieldCrop',
+        payload: { fieldName: selectedField, crop: nextCrop as Crop }
+      });
+    }
   };
 
   return (
     <Paper square className={classes.selectedFieldWrapper}>
-      {activeField && (
+      {activeField ? (
         <>
-          <Typography variant="h6">Selected Field: {activeField.name}</Typography>
-          <Typography variant="body1">Area: {activeField.hectares}</Typography>
-          <Typography variant="body1">Estimated yield: {activeField.yield}</Typography>
+          <Typography variant="h6">{activeField.name}</Typography>
+          <div className={classes.detailsWrapper}>
+            <Typography variant="body1">Area: {activeField.hectares}</Typography>
+            <Typography variant="body1">Estimated yield: {activeField.yield}</Typography>
+          </div>
           <TextField
-            fullWidth
             id="standard-select-currency"
             select
+            fullWidth
             label="Crop"
             value={activeField.selectedCrop ? activeField.selectedCrop.name : ''}
             onChange={handleSelectedCrop}
-            helperText="Please select desired crop"
+            helperText={activeField.selectedCrop ? 'Change your crop' : 'Choose a crop'}
             margin="normal"
           >
             <MenuItem value="" />
@@ -67,11 +81,13 @@ function SelectedFieldView() {
                 {crop.name}
               </MenuItem>
             ))}
+            <MenuItem disabled={!activeField.selectedCrop} value="remove-crop">
+              Remove Crop
+            </MenuItem>
           </TextField>
-          <Button variant="text" fullWidth onClick={handleRemoveCrop}>
-            Remove crop
-          </Button>
         </>
+      ) : (
+        <Typography component="i">Select a field to see its details</Typography>
       )}
     </Paper>
   );
