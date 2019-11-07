@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { BarChart } from 'reaviz';
+import {
+  BarChart,
+  BarSeries,
+  LinearYAxis,
+  LinearAxisTickSeries,
+  LinearAxisTickLabel
+} from 'reaviz';
 
 import { SelectedFieldView, CropLegend } from '.';
 import { useFarmState } from '../store';
@@ -46,7 +52,12 @@ function DashPanel({ farmName }: Props) {
       <Typography variant="h6">Estimated yield value: £{farmYield}</Typography>
       <SelectedFieldView />
       <CropLegend />
-      <BarChart height={300} width={400} data={chartData} />
+      <BarChart
+        series={<BarSeries colorScheme="pastel1" />}
+        height={300}
+        width={400}
+        data={chartData}
+      />
     </section>
   );
 }
