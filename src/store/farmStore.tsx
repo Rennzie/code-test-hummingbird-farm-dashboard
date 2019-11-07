@@ -1,5 +1,4 @@
 import React, { createContext, useReducer, useContext } from 'react';
-import farm from '../data/farm.json';
 import { Field } from '../components/Field';
 import { updateFieldCropAndYields } from './utils';
 
@@ -10,6 +9,8 @@ type FarmProviderProps = {
 type FarmState = {
   farmYield: number | null;
   selectedField: string;
+  farmName: string;
+  farmCenter: any;
   fields: Field[];
 };
 
@@ -21,6 +22,10 @@ export type Crop = {
 };
 
 type FarmAction =
+  | {
+      type: 'setFields';
+      payload: Field[];
+    }
   | {
       type: 'setSelectedField';
       payload: string;
@@ -36,8 +41,10 @@ type FarmAction =
 
 const initialFarmState: FarmState = {
   farmYield: null,
+  farmName: '',
+  farmCenter: null,
   selectedField: '',
-  fields: [...farm.fields]
+  fields: []
 };
 
 const initialMapContext: { farmState: FarmState; farmDispatch: React.Dispatch<FarmAction> } = {
@@ -49,6 +56,11 @@ const FarmContext = createContext(initialMapContext);
 
 const farmReducer = (state: FarmState, action: FarmAction) => {
   switch (action.type) {
+    case 'setFields':
+      return {
+        ...state,
+        fields: action.payload
+      };
     case 'setSelectedField':
       return {
         ...state,

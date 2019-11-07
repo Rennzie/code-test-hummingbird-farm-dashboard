@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Paper, TextField, MenuItem } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
-// import { Field } from './Field';
 import { Crop } from '../store/farmStore';
+import { useGetCrops } from '../api';
 import { useFarmState } from '../store';
-import crops from '../data/crops.json';
 
 const useStyles = makeStyles(({ spacing }: Theme) => ({
   selectedFieldWrapper: {
@@ -33,6 +32,8 @@ function SelectedFieldView() {
     farmDispatch
   } = useFarmState();
 
+  const { data, loading: loadingCrops } = useGetCrops();
+
   const [activeField, setActiveField] = useState();
 
   useEffect(() => {
@@ -46,7 +47,7 @@ function SelectedFieldView() {
     if (event.target.value === 'remove-crop') {
       farmDispatch({ type: 'resetFieldCrop', payload: selectedField });
     } else {
-      const nextCrop = crops.find(crop => crop.name === event.target.value);
+      const nextCrop = data.crops.find((crop: Crop) => crop.name === event.target.value);
 
       farmDispatch({
         type: 'setFieldCrop',
@@ -57,13 +58,22 @@ function SelectedFieldView() {
 
   return (
     <Paper square className={classes.selectedFieldWrapper}>
-      {activeField ? (
+      {activeField && !loadingCrops ? (
         <>
           <Typography variant="h6">{activeField.name}</Typography>
+
+          {/* ---------------------
+              FIELD DETAILS
+          ----------------------- */}
           <div className={classes.detailsWrapper}>
             <Typography variant="body1">Area: {activeField.hectares}</Typography>
             <Typography variant="body1">Estimated yield value: £{activeField.yield}</Typography>
           </div>
+
+          {/* ---------------------
+              CROP HANDLER
+          ----------------------- */}
+
           <TextField
             id="standard-select-currency"
             select
@@ -76,7 +86,7 @@ function SelectedFieldView() {
           >
             <MenuItem value="" />
 
-            {crops.map((crop: Crop) => (
+            {data.crops.map((crop: Crop) => (
               <MenuItem key={crop.name} value={crop.name}>
                 {crop.name}
               </MenuItem>

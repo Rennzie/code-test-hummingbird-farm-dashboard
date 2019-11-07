@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function useGetFarm() {
+function useGetCrops() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any | undefined>();
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get('http://www.mocky.io/v2/5cc809b5300000a300055eac')
-      .then(res => setData({ farm: res.data }))
+      .get('http://www.mocky.io/v2/5cc8098e300000a300055eab')
+      .then(res => setData({ crops: res.data }))
       .catch(error => console.error('Error fetching farms', error))
       .finally(() => setLoading(false));
   }, [setLoading, setData]);
@@ -17,4 +17,4 @@ function useGetFarm() {
   return { data, loading };
 }
 
-export default useGetFarm;
+export default useGetCrops;
