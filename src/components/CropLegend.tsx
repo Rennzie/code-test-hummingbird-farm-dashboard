@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, MenuItem, Button, ListItemIcon, ListItemText } from '@material-ui/core';
 
-import { cropColors } from './Field';
+export const cropColors = new Map([
+  ['Winter Wheat - Reflectance', '#FFCDD2'],
+  ['Winter Wheat - Sundance', '#F44336'],
+  ['Winter Wheat - Skyfall', '#C62828'],
+  ['Winter Wheat - Dickens', '#D50000'],
+  ['Sprint Wheat - Granary', '#795548'],
+  ['Sprint Wheat - Belepi', '#3E2723'],
+  ['Winter Barley - California', '#A5D6A7'],
+  ['Winter Barley - Belfry', '#388E3C'],
+  ['Winter Barley - Craft', '#1B5E20'],
+  ['Winter OSR - Harper', '#FDD835']
+]);
 
 type ColorSet = { color: string; name: string };
 
@@ -30,7 +41,8 @@ function CropLegend() {
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
-        // onClose={handleClose}
+        onClose={handleClose}
+        variant="menu"
       >
         {iterableColors.map(set => (
           <MenuItem style={{ display: 'flex', justifyContent: 'center' }}>

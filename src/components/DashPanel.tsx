@@ -43,7 +43,7 @@ function DashPanel({ farmName }: Props) {
   return (
     <section className={classes.dashPanel}>
       <Typography variant="h4">{farmName}</Typography>
-      <Typography variant="h6">Estimated Yield: £{farmYield}</Typography>
+      <Typography variant="h6">Estimated yield value: £{farmYield}</Typography>
       <SelectedFieldView />
       <CropLegend />
       <BarChart height={300} width={400} data={chartData} />

@@ -62,7 +62,7 @@ function SelectedFieldView() {
           <Typography variant="h6">{activeField.name}</Typography>
           <div className={classes.detailsWrapper}>
             <Typography variant="body1">Area: {activeField.hectares}</Typography>
-            <Typography variant="body1">Estimated yield: {activeField.yield}</Typography>
+            <Typography variant="body1">Estimated yield value: £{activeField.yield}</Typography>
           </div>
           <TextField
             id="standard-select-currency"

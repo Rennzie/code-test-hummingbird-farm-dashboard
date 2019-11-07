@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { GeoJSON } from 'react-leaflet';
 import { Crop } from '../store/farmStore';
+import { cropColors } from './CropLegend';
 import { useFarmState } from '../store';
 
 export type Field = {
@@ -16,23 +17,9 @@ type Props = {
   field: Field;
 };
 
-export const cropColors = new Map([
-  ['Winter Wheat - Reflectance', '#FFCDD2'],
-  ['Winter Wheat - Sundance', '#F44336'],
-  ['Winter Wheat - Skyfall', '#C62828'],
-  ['Winter Wheat - Dickens', '#D50000'],
-  ['Sprint Wheat - Granary', '#795548'],
-  ['Sprint Wheat - Belepi', '#3E2723'],
-  ['Winter Barley - California', '#A5D6A7'],
-  ['Winter Barley - Belfry', '#388E3C'],
-  ['Winter Barley - Craft', '#1B5E20'],
-  ['Winter OSR - Harper', '#FDD835']
-]);
-
 function Field({ field }: Props) {
   const { farmDispatch } = useFarmState();
   const [fillColor, setFillColor] = useState('#BDBDBD');
-  // console.log(field);
 
   useEffect(() => {
     if (field.selectedCrop) {
