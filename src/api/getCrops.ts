@@ -16,7 +16,7 @@ function useGetCrops() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get('http://www.mocky.io/v2/5cc8098e300000a300055eab')
+      .get('https://www.mocky.io/v2/5cc8098e300000a300055eab')
       .then(res => setData({ crops: res.data }))
       .catch(err => setError(err))
       .finally(() => setLoading(false));

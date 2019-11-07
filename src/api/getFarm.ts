@@ -16,7 +16,7 @@ function useGetFarm() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get('http://www.mocky.io/v2/5cc809b5300000a300055eac')
+      .get('https://www.mocky.io/v2/5cc809b5300000a300055eac')
       .then(res => setData({ farm: res.data }))
       .catch(err => setError(err))
       .finally(() => setLoading(false));
