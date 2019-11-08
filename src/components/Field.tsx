@@ -32,7 +32,7 @@ function Field({ field }: Props) {
     farmState: { selectedField },
     farmDispatch
   } = useFarmState();
-  const [fillColor, setFillColor] = useState('#BDBDBD');
+  const [fillColor, setFillColor] = useState('blue');
   const [selectedStyle, setSelectedStyle] = useState();
 
   useEffect(() => {
@@ -49,7 +49,7 @@ function Field({ field }: Props) {
         setFillColor(color);
       }
     } else {
-      setFillColor('#BDBDBD');
+      setFillColor('blue');
     }
   }, [field]);
 

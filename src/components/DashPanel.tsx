@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, MenuItem, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { BarChart, BarSeries } from 'reaviz';
 
-import { SelectedFieldView, CropLegend } from '.';
+import { SelectedFieldView, CropLegend, Field } from '.';
+import { Field as FieldType } from './Field';
 import { useFarmState } from '../store';
 
 const useStyles = makeStyles(() => ({
@@ -34,7 +35,8 @@ type Props = {
 function DashPanel({ farmName }: Props) {
   const classes = useStyles({});
   const {
-    farmState: { farmYield, fields }
+    farmState: { farmYield, fields, selectedField },
+    farmDispatch
   } = useFarmState();
 
   const [chartData, setChartData] = useState([{ key: '', data: 0 }]);
@@ -48,10 +50,35 @@ function DashPanel({ farmName }: Props) {
     setChartData(newChartData);
   }, [fields, setChartData]);
 
+  const handleSelectField = (event: React.ChangeEvent<HTMLInputElement>) => {
+    farmDispatch({ type: 'setSelectedField', payload: event.target.value });
+  };
+
   return (
     <section className={classes.dashPanel}>
       <Typography variant="h4">{farmName}</Typography>
       <Typography variant="h6">Estimated farm yield value: £{farmYield}</Typography>
+      {/* ---------------------
+              CROP HANDLER
+          ----------------------- */}
+      <TextField
+        id="select-field"
+        select
+        fullWidth
+        label="Field"
+        value={selectedField}
+        onChange={handleSelectField}
+        helperText="Select a field to view its details below"
+        margin="normal"
+      >
+        <MenuItem value="" />
+
+        {fields.map((field: FieldType) => (
+          <MenuItem key={field.name} value={field.name}>
+            {field.name}
+          </MenuItem>
+        ))}
+      </TextField>
       <SelectedFieldView />
       <CropLegend />
       <div>
